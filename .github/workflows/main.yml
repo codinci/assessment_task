@@ -33,4 +33,4 @@ jobs:
       - name: Run Tests
         run: |
           . venv/bin/activate
-          python manage.py test
+          python django-aws-backend/manage.py test
