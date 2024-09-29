@@ -46,7 +46,7 @@ jobs:
         image: docker:20.10.7-dind
         options: --privileged
     env:
-      AWS_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ github.event.repository.name }}:latest
+      AWS_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/django-aws-backend:latest
     steps:
       - uses: actions/checkout@v3
 
