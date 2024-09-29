@@ -21,3 +21,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+admin.site.site_header = "Django AWS Admin Panel"
