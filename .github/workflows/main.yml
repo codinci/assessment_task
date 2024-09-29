@@ -46,7 +46,7 @@ jobs:
         image: docker:20.10.7-dind
         options: --privileged
     env:
-      AWS_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/${{ github.event.repository.name }}:latest
+      AWS_REGISTRY_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ github.event.repository.name }}:latest
     steps:
       - uses: actions/checkout@v3
 
@@ -55,13 +55,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Log in to Amazon ECR
         id: login-ecr
         run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_DEFAULT_REGION }} | docker login --username AWS --password-stdin $AWS_REGISTRY_URL
-          
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $AWS_REGISTRY_URL
+
       - name: Pull previous image
         run: |
           docker pull $AWS_REGISTRY_URL || true
