@@ -54,4 +54,4 @@ jobs:
         env:
             super_secret: ${{ secrets.AWS_ACCOUNT_ID }}
         if: ${{ env.super_secret == '' }}
-        run: 'echo "echo the secret \"MY_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it"
+        run: 'echo "echo the secret has not been made; echo please go to \"settings \> secrets \> actions\" to create it"
