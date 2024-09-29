@@ -77,4 +77,4 @@ jobs:
 
       - name: Deploy to AWS
         run: |
-          ./scripts/deploy.sh
+          .django-aws-backend/scripts/deploy.sh
