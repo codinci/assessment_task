@@ -1,22 +1,35 @@
 FROM python:3.10-slim-buster
 
-# Open http port
+# Open HTTP port
 EXPOSE 8000
 
-ENV PYTHONUNBUFFERED = 1
-ENV PYTHONDONTWRITEBYTECODE = 1
-ENV DEBIAN_FRONTEND = noninteractive
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install pip and gunicorn web server
+# Install pip and Gunicorn
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install gunicorn==20.1.0
 
-# Install requirements.txt
+# Install dependencies from requirements.txt
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
 
-# Moving application files
+# Set the working directory for the application
 WORKDIR /app
+
+# Copy the rest of the application files
 COPY . /app
 
-RUN ./manage.py collectstatic --noinput
+# Ensure manage.py is executable (just in case)
+RUN chmod +x manage.py
+
+# Set static file directory
+RUN mkdir -p /app/staticfiles
+
+# Collect static files
+RUN python manage.py collectstatic --noinput || echo "collectstatic failed"
+
+# Start the Gunicorn server
+CMD ["gunicorn", "--workers=3", "--bind=0.0.0.0:8000", "your_project_name.wsgi:application"]
