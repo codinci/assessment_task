@@ -50,22 +50,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Log in to Amazon ECR
-        id: login-ecr
-        run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_REGISTRY_URL
-
-      - name: Pull previous image
-        run: |
-          docker pull $AWS_REGISTRY_URL || true
-
-      - name: Build and Push Docker Image
-        run: |
-          docker build --cache-from $AWS_REGISTRY_URL -t $AWS_REGISTRY_URL .
-          docker push $AWS_REGISTRY_URL
+      - name: "check is MY_SECRET exists"
+        env:
+            super_secret: ${{ secrets.AWS_ACCOUNT_ID }}
+        if: ${{ env.super_secret == '' }}
+        run: 'echo "echo the secret \"MY_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it"
