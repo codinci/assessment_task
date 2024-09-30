@@ -3,6 +3,8 @@ from ..models import Order
 from django.conf import settings
 import africastalking
 from django.utils import timezone
+import requests
+
 
 # Initialize Africa's Talking SDK
 africastalking.initialize(
@@ -24,14 +26,27 @@ def place_order(request):
         order = Order.objects.create(
             user=user,
             product_name=product_name,
-            order_time=timezone.now() 
+            order_time=timezone.now()
         )
 
         # Send SMS via Africa's Talking
         try:
-            message = "Thank you for making an order with us."
-            response = sms.send(message, [phone_number])
-            print(response)
+            url = 'https://api.africastalking.com/version1/messaging'
+            headers = {
+                            'ApiKey': settings.AFRICAS_TALKING_API_KEY,
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/json'
+                        }
+            body = {
+                        'username': settings.AFRICAS_TALKING_USERNAME,
+                        'from': 17145,
+                        'message':  "Thank you for making an order with us.",
+                        'to': phone_number
+                    }
+            response = requests.post(url=url, headers=headers, data=body)
+            data = response.json().get('SMSMessageData').get('Recipients')[0]
+            print('Hello')
+            print(data)
         except Exception as e:
             print(f"Failed to send SMS: {e}")
 
