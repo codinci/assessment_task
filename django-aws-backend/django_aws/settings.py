@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import environ
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -116,20 +118,26 @@ WSGI_APPLICATION = 'django_aws.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': env.db(default="postgresql://postgres:postgres@127.0.0.1:5433/customer_orders_db")
-}
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('POSTGRES_DB'),
-#         'USER': env('POSTGRES_USER'),
-#         'PASSWORD': env('POSTGRES_PASSWORD'),
-#         'HOST': env('POSTGRES_HOST', default='localhost'),
-#         'PORT': env('POSTGRES_PORT', default='5432'),
-#     }
-# }
+if 'DATABASE_URL' in os.environ:
+    # Use the DATABASE_URL for Docker (set in docker-compose.yml)
+    DATABASES = {
+        'default': env.db(default="postgresql://${'POSTGRES_USER}:${'POSTGRES_PASSWORD'}@127.0.0.1:5433/${'POSTGRES_DB'}")
+    }
+else:
+    # Fallback to local PostgreSQL configuration for running locally
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env('POSTGRES_DB', default='customer_orders_db'),
+            'USER': env('POSTGRES_USER', default='postgres'),
+            'PASSWORD': env('POSTGRES_PASSWORD', default='postgres'),
+            'HOST': env('POSTGRES_HOST', default='127.0.0.1'),
+            'PORT': env('POSTGRES_PORT', default='5432'),
+        }
+    }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
