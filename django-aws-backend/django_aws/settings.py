@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "allauth.account",  # new
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
+    'django_aws',
 ]
 
 MIDDLEWARE = [
@@ -80,12 +81,14 @@ STATIC_ROOT = BASE_DIR / "static"
 
 ROOT_URLCONF = 'django_aws.urls'
 
+AUTH_USER_MODEL = 'django_aws.User'
+
 
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'APP': {
-            'client_id': 'Ov23liSbTabSlekZGJs4',
-            'secret': 'c661b6b2d010c389c2e5e9051243fc5f91c997d0',
+            'client_id': env('GITHUB_CLIENT_ID'),
+            'secret': env('GITHUB_SECRET_KEY'),
             'key': ''
         }
     }
@@ -117,6 +120,16 @@ DATABASES = {
     'default': env.db(default="postgresql://postgres:postgres@127.0.0.1:5433/customer_orders_db")
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('POSTGRES_DB'),
+#         'USER': env('POSTGRES_USER'),
+#         'PASSWORD': env('POSTGRES_PASSWORD'),
+#         'HOST': env('POSTGRES_HOST', default='localhost'),
+#         'PORT': env('POSTGRES_PORT', default='5432'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -158,3 +171,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Africa's Talking connection
+AFRICAS_TALKING_USERNAME = env('AFRICAS_TALKING_USERNAME')
+AFRICAS_TALKING_API_KEY = env('AFRICAS_TALKING_API_KEY')
+
+
+
+#Debugging
+# print("Database URL: ", env('DATABASE_URL'))

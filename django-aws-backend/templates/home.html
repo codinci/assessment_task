@@ -1,5 +1,35 @@
 {% load socialaccount %}
-<h1>Welcome to My Site</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Shop</title>
+    <script>
+        function openOrderPopup() {
+            document.getElementById('orderPopup').style.display = 'block';
+        }
+
+        function closeOrderPopup() {
+            document.getElementById('orderPopup').style.display = 'none';
+        }
+    </script>
+    <style>
+        /* Simple styling for the popup */
+        #orderPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to My Shop</h1>
 {% if user.is_authenticated %}
     <h2>Welcome, {{ user.username }}!</h2>
     <p>You are currently logged in.</p>
@@ -9,12 +39,44 @@
     <p>Please log in or sign up to access all features.</p>
 {% endif %}
 
+<h2>Available Products</h2>
+<ul>
+    <li>Laptop </li>
+    <li>Phone </li>
+</ul>
+
+{% if user.is_authenticated %}
+    <button onclick="openOrderPopup()">Place Order</button>
+{% else %}
+    <p><a href="{% url 'account_login' %}">Log in to place an order</a></p>
+{% endif %}
+
+<div id="orderPopup">
+    <h3>Place Your Order</h3>
+    <form method="POST" action="{% url 'place_order' %}">
+        {% csrf_token %}
+        <label for="product_name">Product:</label>
+        <select name="product_name">
+            <option value="Laptop">Laptop</option>
+            <option value="Phone">Phone</option>
+        </select>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" name="phone_number" required>
+
+        <button type="submit">Place Order</button>
+    </form>
+</div>
+
 <h2>Options:</h2>
 <ul>
     {% if not user.is_authenticated %}
         <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
         <li><a href="{% url 'account_login' %}">Log In</a></li>
-        <li><a href="{% provider_login_url 'github' %}"> LogIn via Github</a></li>
+        <li><a href="{% provider_login_url 'github' %}">Log in via Github</a></li>
     {% endif %}
-        <li><a href="{% url 'account_reset_password' %}">Reset Password</a></li>
+    <li><a href="{% url 'account_reset_password' %}">Reset Password</a></li>
 </ul>
+
+</body>
+</html>

@@ -17,15 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
+from .views.order import place_order
 
 def home(request):
 	return render(request, 'home.html')
 
 
 urlpatterns = [
-	path('', home),
+	path('', home, name='home'),
     path("admin/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),  # new
+    path("accounts/", include("allauth.urls")),
+	path('place_order/', place_order, name='place_order'),
 ]
 
 admin.site.site_header = "Django AWS Admin Local Panel"
