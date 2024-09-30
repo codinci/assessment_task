@@ -10,6 +10,10 @@ services:
         - postgres
       environment:
         DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+        GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+        GITHUB_SECRET_KEY: ${GITHUB_SECRET_KEY}
+        AFRICAS_TALKING_USERNAME: ${AFRICAS_TALKING_USERNAME}
+        AFRICAS_TALKING_API_KEY: ${AFRICAS_TALKING_API_KEY}
   postgres:
     image: postgres
     ports:
