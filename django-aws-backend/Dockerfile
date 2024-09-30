@@ -32,4 +32,4 @@ RUN mkdir -p /app/staticfiles
 RUN python manage.py collectstatic --noinput || echo "collectstatic failed"
 
 # Start the Gunicorn server
-CMD ["gunicorn", "--workers=3", "--bind=0.0.0.0:8000", "your_project_name.wsgi:application"]
+CMD ["gunicorn", "--workers=3", "--bind=0.0.0.0:8000", "django_aws.wsgi:application"]
