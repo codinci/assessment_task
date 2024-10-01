@@ -31,6 +31,11 @@ jobs:
           pip install -r django-aws-backend/requirements.txt
 
       - name: Run Tests
+        env:
+          HUB_CLIENT_ID: ${{ secrets.HUB_CLIENT_ID }}
+          HUB_SECRET_KEY: ${{ secrets.HUB_SECRET_KEY }}
+          AFRICAS_TALKING_USERNAME: ${{ secrets.AFRICAS_TALKING_USERNAME }}
+          AFRICAS_TALKING_API_KEY: ${{ secrets.AFRICAS_TALKING_API_KEY }}
         run: |
           . venv/bin/activate
           python django-aws-backend/manage.py test
