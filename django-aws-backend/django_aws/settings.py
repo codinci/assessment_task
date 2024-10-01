@@ -89,8 +89,8 @@ AUTH_USER_MODEL = 'django_aws.User'
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'APP': {
-            'client_id': env('GITHUB_CLIENT_ID'),
-            'secret': env('GITHUB_SECRET_KEY'),
+            'client_id': env('HUB_CLIENT_ID'),
+            'secret': env('HUB_SECRET_KEY'),
             'key': ''
         }
     }
@@ -186,6 +186,3 @@ AFRICAS_TALKING_USERNAME = env('AFRICAS_TALKING_USERNAME')
 AFRICAS_TALKING_API_KEY = env('AFRICAS_TALKING_API_KEY')
 
 
-
-#Debugging
-# print("Database URL: ", env('DATABASE_URL'))

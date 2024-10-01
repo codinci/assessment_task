@@ -33,3 +33,19 @@ variable "prod_rds_instance_class" {
   description = "RDS instance type"
   default     = "db.t4g.micro"
 }
+
+variable "prod_hub_client_id" {
+  description = "github client id for authentication"
+}
+
+variable "prod_hub_secret_key" {
+  description = "github secret key for authentication"
+}
+
+variable "prod_africas_talking_username"{
+  description = "africas talking username for sms"
+}
+
+variable "prod_africas_talking_api_key"{
+  description = "africas talking api key for sms"
+}
