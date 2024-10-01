@@ -28,25 +28,12 @@ def place_order(request):
             product_name=product_name,
             order_time=timezone.now()
         )
-
+        sender = '8576' #Place a valid sender id
         # Send SMS via Africa's Talking
         try:
-            url = 'https://api.africastalking.com/version1/messaging'
-            headers = {
-                            'ApiKey': settings.AFRICAS_TALKING_API_KEY,
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'Accept': 'application/json'
-                        }
-            body = {
-                        'username': settings.AFRICAS_TALKING_USERNAME,
-                        'from': 17145,
-                        'message':  "Thank you for making an order with us.",
-                        'to': phone_number
-                    }
-            response = requests.post(url=url, headers=headers, data=body)
-            data = response.json().get('SMSMessageData').get('Recipients')[0]
-            print('Hello')
-            print(data)
+            message = f"Hello {user.username}, thank you for your order of {product_name}. We will notify you once it's ready!"
+            response = sms.send(message, [phone_number], sender)
+            print("SMS Response: ", response)
         except Exception as e:
             print(f"Failed to send SMS: {e}")
 
